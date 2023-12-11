@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .back{
+            background-color: ivory;
+        }
+
+    </style>
+</head>
+<body class="back">
+    <h1>Spotify statistics</h1>
+    <hr/>
+    <h2>Album information</h2>
+    <div>
+        <table border="5px" padding="10px" style="text-align:center">
+            <thead>
+                    <tr>
+                        {% for row in colname %}
+                            <th width="220px">{{ row }}</th>
+                        {% endfor %}
+                    </tr>
+
+            </thead>
+    
+            <tbody>
+                {% for row in table_data %}
+                    <tr>
+                        <td>
+                            <img src={{ row['Album_cover'] }} style="width: 220px;"/>
+                        </td>
+                        <td>
+                            <a href="http://127.0.0.1:5000/album/tracks/aaa" target="_blank">{{ row['Album_Name'] }}</a>
+                        </td>
+                        <td>{{ row['Type'] }}</td>
+                        <td>{{ row['Release_date'] }}</td>
+                        <td>{{ row['Total_tracks'] }}</td>
+                        <td>{{ row['Artists'] }}</td>
+                        <td>{{ row['External_urls'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
