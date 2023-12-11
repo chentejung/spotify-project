@@ -1,4 +1,4 @@
-# spotify-project
+# Spotify-project
 
 ## Getting started
 ### 前置作業
