@@ -9,6 +9,7 @@
         }
 
     </style>
+
 </head>
 <body class="back">
     <h1>Spotify statistics</h1>
@@ -25,14 +26,14 @@
 
             </thead>
     
-            <tbody>
+            <tbody id="trackinfo">
                 {% for row in table_data %}
                     <tr>
                         <td>
                             <img src={{ row['Album_cover'] }} style="width: 220px;"/>
                         </td>
                         <td>
-                            <a href="http://127.0.0.1:5000/album/tracks/aaa" target="_blank">{{ row['Album_Name'] }}</a>
+                            <a href='http://127.0.0.1:5000' target="_blank">{{ row['Album_Name'] }}</a>
                         </td>
                         <td>{{ row['Type'] }}</td>
                         <td>{{ row['Release_date'] }}</td>
@@ -43,6 +44,13 @@
                 {% endfor %}
             </tbody>
         </table>
+        <script>
+            var aObj = document.getElementById('trackinfo').getElementsByTagName('a');
+            for (var i = 0;i < aObj.length; i++) {
+                var srcName = aObj.item(i).innerText
+                aObj.item(i).setAttribute('href', "http://127.0.0.1:5000/album/tracks/"+srcName);
+            }
+        </script>
     </div>
 </body>
 </html>

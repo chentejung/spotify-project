@@ -61,7 +61,6 @@ class Spotify:
         srcItem = '$'+srcCol
         if sortType == 'count':
             sortCol2 = '$sum'
-
         if filtquery != None:
             
             # need to adjust if-else

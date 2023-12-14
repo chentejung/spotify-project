@@ -10,10 +10,6 @@ def hello():
     text = "Hello, World! Searching for music?"
     return render_template('welcomepage.html', text=text)
 
-# @app.route("/img")
-# def img():
-#     return render_template('testImg.html')
-
 @app.route("/artist/<string:name>")
 def query_artist(name):
     if name:
@@ -29,7 +25,6 @@ def query_artist(name):
 def query_ablum(name):
     if name:
         try:
-            # columns=['Album_Name', 'Type', 'Total_tracks','Release_date', 'Artists', 'Available_markets','External_urls']
             columns=['Album_cover', 'Album_Name', 'Type', 'Release_date', 'Total_tracks', 'Artists','External_urls']
 
             # search album info using artist name and ID, for specific
@@ -68,8 +63,6 @@ def query_ablum(name):
             dfDict = dfshow.to_dict('records')
 
             return render_template('index2v2.html', table_data = dfDict, colname = columns)
-                
-            # return render_template('index2.html', tables=[dfshow.to_html(classes='data', header="false")])
 
         except:
             return 'No album information found!'
@@ -89,13 +82,15 @@ def trackinoGen(name):
             df2 = df1.loc[0]
             index1 = df2['name'].index(name)
             albumID = df2['_id'][index1]
-            
-            # albumID = '79ZWjBsvyse3ATc6NWOw95'
             query2 = {"$regex":f"{albumID}"}
             res = table2.get_collection_search_query('href', query2)
+            templist = []
             for i in res['items']:
+                singerlist = []
                 for j in i['artists']:
-                    return print(i['name'], j['name'])
+                    singerlist.append(j['name'])
+                templist.append([i['name'], singerlist])
+            return templist
 
         except:
             return 'No track information yet!'

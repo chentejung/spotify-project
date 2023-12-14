@@ -17,11 +17,10 @@ search Artist Spotify ID
 def getArtistId(filePath):
     genre = filePath.replace('files/source/', '').split('/')[0]
     with open(filePath, 'r') as f:
-        content = f.read().splitlines()#[32:]
+        content = f.read().splitlines()
     colName = ['artist_ID_url', 'playlist_ID_url']
     tempList = []
     collName = f'{genre}_ID'
-    # collName = f'rap_ID'
 
     '''start searching'''
     for idx1, name in enumerate(content):
@@ -79,21 +78,10 @@ def InfoFromSpotify(srcType, srcTab, newTabName):
         df1 = pd.DataFrame(_table.aggregate_number_search(srcCol))
         print(df1.shape[0])
         startRow = 2
-        # print(df1)
         df1 = df1.iloc[startRow:]
         totalNum = df1.shape[0]
         url = f'https://api.spotify.com/v1/artists'
         trashData = []
-
-        '''check missing artist, re-search'''
-        # list1 = df1['_id'].values.tolist()
-        # with open('/home/ellie/mineProject/spotify/files/source/rap/20231128/artistlist20231128.txt', 'r') as f:
-        #     content = f.read().splitlines()
-        # list2 = list(dict.fromkeys(content))
-        # list_dif = [i for i in list1 + list2 if i not in list1 or i not in list2]
-        
-        # from saveFile import saveTxt
-        # saveTxt(list_dif, 'files/source', 'missingArtist.txt', 'w')
 
 
     elif srcType == 'album':
@@ -108,18 +96,24 @@ def InfoFromSpotify(srcType, srcTab, newTabName):
         # nextList = 2
 
     elif srcType == 'trackGen':
-        table1 = Spotify(srcTab)
-        srcCol = 'items.id'
-        startRow = 1
-        dfList = pd.DataFrame(table1.aggregate_number_search(srcCol))['_id'][startRow:].values.tolist()   # retrieve album ID for tracks search
-        flatList = [item for sublist in dfList for item in sublist]  # flatten list in list situation
+        if not pd.DataFrame(Spotify(newTabName).aggregate_number_search('href','count')).empty:
+            listPath = '/home/ellie/mineProject/yetSearchTrackAlbumID-3.txt'
+            with open(listPath, 'r') as f:
+                flatList = f.read().splitlines()
+        else:
+            table1 = Spotify(srcTab)
+            srcCol = 'items.id'
+            startRow = 1
+            dfList = pd.DataFrame(table1.aggregate_number_search(srcCol, 'count'))['_id'][startRow:].values.tolist()   # retrieve album ID for tracks search
+            flatList = [item for sublist in dfList for item in sublist]  # flatten list in list situation
         df1 = pd.Series(flatList).drop_duplicates().reset_index(drop=True)
-        # print(df1)
         totalNum = df1.shape[0]
         print(totalNum)
+
         url = f'https://api.spotify.com/v1/albums'
 
         nextList = 0
+        # nextList = 2
 
 
 
@@ -131,7 +125,6 @@ def InfoFromSpotify(srcType, srcTab, newTabName):
         headers = {'Authorization': f"{type} {token}"}
 
         count = 0
-        # count = 789
         templist = []
         while count < totalNum:
             time.sleep(random.randint(1,5))
@@ -163,7 +156,7 @@ def InfoFromSpotify(srcType, srcTab, newTabName):
                 if nextList == 0:
                     srcUrl = f'{url}/{id}/tracks?limit=50&offset=0'
                 elif nextList == 2:
-                    srcUrl = ''
+                    srcUrl = 'https://api.spotify.com/v1/albums/7idQyUTLu0eUJdAOAvR8nh/tracks?limit=50&offset=0'
 
             '''start API search'''
             print(srcUrl)
@@ -216,7 +209,7 @@ def InfoFromSpotify(srcType, srcTab, newTabName):
 
 
 if __name__ == '__main__':
-    # filePath = '/home/ellie/mineProject/spotify/files/source/20231206/missingArtist.txt'
+    # filePath = '/home/ellie/mineProject/missingArtist.txt'
     # collName = getArtistId(filePath)
 
     # infoType = 'artist'
