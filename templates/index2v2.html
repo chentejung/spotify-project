@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Album List</title>
     <style type="text/css">
         .back{
             background-color: ivory;
@@ -47,7 +47,7 @@
         <script>
             var aObj = document.getElementById('trackinfo').getElementsByTagName('a');
             for (var i = 0;i < aObj.length; i++) {
-                var srcName = aObj.item(i).innerText
+                var srcName = aObj.item(i).innerText;
                 aObj.item(i).setAttribute('href', "http://127.0.0.1:5000/album/tracks/"+srcName);
             }
         </script>

@@ -61,6 +61,7 @@ class Spotify:
         srcItem = '$'+srcCol
         if sortType == 'count':
             sortCol2 = '$sum'
+
         if filtquery != None:
             
             # need to adjust if-else
@@ -84,7 +85,7 @@ class Spotify:
             sort = None
         elif sort == 'desc':
             sort = -1
-        return self.collection.find().sort(srcItem, sort)
+        return self.collection.find().sort(srcItem, sort)#.allow_disk_use(True)
     
     def delete_one_by_id_name(self, srcItem):
         query = {"id": srcItem}
