@@ -20,6 +20,7 @@ def showStats(srcFilter):
     title, srcData, genreData = dataAnalysis.sortPopularity(srcFilter)
     return render_template('stats1.html', value1=title, value2=srcData, value3=genreData)
 
+
 @app.route("/artist/<string:name>")
 def query_artist(name):
     if name:
@@ -73,45 +74,52 @@ def query_ablum(name):
             dfshow = dfshow.loc[dfshow.astype(str).drop_duplicates().index].sort_values(by='Release_date', ascending=False).reset_index(drop=True)
             dfDict = dfshow.to_dict('records')
 
-            return render_template('index2v2.html', table_data = dfDict, colname = columns)
-                
+            return render_template('index2v2.html', artistName = name, table_data = dfDict, colname = columns)
             # return render_template('index2.html', tables=[dfshow.to_html(classes='data', header="false")])
 
         except:
             return 'No album information found!'
         
 
-@app.route('/album/tracks/<string:name>')  # name should be album name
-def trackinoGen(name):
-    if name:
-        try:
-            collName1 = 'rapper_album_information'
-            collName2 = 'rapper_track_general_information'
-            table1 = Spotify(collName1)
-            table2 = Spotify(collName2)
+@app.route('/tracks/<string:artName>/<string:albName>')  # fisrt one is artist's name, second one is album name
+def trackinoGen(artName, albName):
+    try:
+        collName1 = 'rapper_album_information'
+        collName2 = 'rapper_track_general_information'
+        table1 = Spotify(collName1)
+        table2 = Spotify(collName2)
 
-            query1 = {'items.name': name}
-            df1 = pd.DataFrame(table1.aggregate_number_search('items.id', 'count', query1))
-            df2 = df1.loc[0]
-            index1 = df2['name'].index(name)
-            albumID = df2['_id'][index1]
-            # print(albumID)
-            
-            # albumID = '3C2aiQ7oAB7shCeH4uXmcC'
-            query2 = {"$regex":f"{albumID}"}
-            res = table2.get_collection_search_query('href', query2)
-            # print(res)
-            templist = []
-            for i in res['items']:
-                singerlist = []
-                for j in i['artists']:
-                    singerlist.append(j['name'])
-                templist.append([i['name'], singerlist])
-            # print(templist)
-            return templist
+        query1 = {'items.name': albName, 'items.artists.name': artName}
+        df1 = pd.DataFrame(table1.get_collection_search_query_multiple_conditions(query1, 'and'))
+        list1 = df1.loc[0]['items']
+        df2 = pd.DataFrame.from_records(list1)
+        albumID = df2[df2['name'] == albName]['id'].iloc[0]
+        # print(albumID)
 
-        except:
-            return 'No track information yet!'
+        '''columns to retrieve'''
+        cols = ['Track Name', 'Artists', 'External_urls']
+        query2 = {"$regex":f"{albumID}"}
+        res = table2.get_collection_search_query('href', query2)
+        templist = []
+        for i in res['items']:
+            singerlist = []
+            for j in i['artists']:
+                singerlist.append(j['name'])
+            templist.append({cols[0]: i['name'],
+                            cols[1]: singerlist,
+                            cols[2]: i['external_urls']['spotify']
+                            })
+        # print(templist)
+        return render_template('trackInfo1.html', albumName = albName, albumID = albumID, table_data = templist, colname = cols)
+
+    except:
+        return 'No track information yet!'
+    
+
+@app.route("/tracks/detail/<string:albumID>")
+def trackDetail(albumID):
+    albName, imgUrl, colName, list = dataAnalysis.trackData(albumID)
+    return render_template('trackInfo2.html', albumName = albName, imgUrl = imgUrl, table_data = list, colname = colName)
         
 
 

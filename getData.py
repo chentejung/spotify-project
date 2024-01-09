@@ -109,7 +109,7 @@ def InfoFromSpotify(srcType, srcTab, newTabName):
 
     elif srcType == 'trackGen':
         if not pd.DataFrame(Spotify(newTabName).aggregate_number_search('href','count')).empty:
-            listPath = '/home/ellie/mineProject/spotify/files/source/rap/20240103/yetSearchTrackAlbumID-2.txt'
+            listPath = '/home/ellie/mineProject/spotify/files/source/rap/20240109/yetSearchTrackAlbumID-1.txt'
             with open(listPath, 'r') as f:
                 flatList = f.read().splitlines()#[8744:]
         else:
@@ -219,6 +219,9 @@ def InfoFromSpotify(srcType, srcTab, newTabName):
             saveTxt(trashData, 'files', 'trashRapperList.txt', 'w')
 
     except Exception as e:
+        newTable = Spotify(newTabName)
+        newTable.insert_many(templist)
+        print(f'Save last batch!')
         print(e)
 
 
