@@ -4,7 +4,9 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 from flask import Flask, render_template, redirect, request, url_for, jsonify, make_response
 import dataAnalysis
+from genius1 import findLyrics
 app = Flask(__name__)
+
 
 @app.route("/", methods=['POST', 'GET'])
 def hello():
@@ -65,7 +67,6 @@ def query_ablum(name):
                                                 columns[4]: j['total_tracks'], 
                                                 columns[5]: artisList, 
                                                 columns[6]: j['external_urls']['spotify']})
-            # print(templist1)
             
             dfshow = pd.DataFrame.from_dict(templist1)
 
@@ -94,7 +95,7 @@ def trackinoGen(artName, albName):
         list1 = df1.loc[0]['items']
         df2 = pd.DataFrame.from_records(list1)
         albumID = df2[df2['name'] == albName]['id'].iloc[0]
-        # print(albumID)
+
 
         '''columns to retrieve'''
         cols = ['Track Name', 'Artists', 'External_urls']
@@ -109,8 +110,8 @@ def trackinoGen(artName, albName):
                             cols[1]: singerlist,
                             cols[2]: i['external_urls']['spotify']
                             })
-        # print(templist)
-        return render_template('trackInfo1.html', albumName = albName, albumID = albumID, table_data = templist, colname = cols)
+
+        return render_template('trackInfo1.html', albumName = albName, albumID = albumID, table_data = templist, colname = cols, artName = artName)
 
     except:
         return 'No track information yet!'
@@ -120,7 +121,16 @@ def trackinoGen(artName, albName):
 def trackDetail(albumID):
     albName, imgUrl, colName, list = dataAnalysis.trackData(albumID)
     return render_template('trackInfo2.html', albumName = albName, imgUrl = imgUrl, table_data = list, colname = colName)
+
+
+@app.route("/tracks/lyrics/<string:artName>/<string:tracName>")
+def lyricsShow(artName, tracName):
+    res = findLyrics(artName, tracName)
+    if res == 0:
+        return 'No lyrics information found!'
+    else:
+        return render_template('trackLyrics.html', table_data = res, tracName = tracName)
         
 
 
-app.run(port=5000, debug=True)
+app.run(port=5000, debug=True, host='0.0.0.0')
