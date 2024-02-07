@@ -20,8 +20,8 @@ SPOTIFY_TOKEN_OWNER = ''
 ```
 #### 啟動環境
 - pip install -r requirements.txt  
-- docker-compose config  _# check docker-compose.yml output with environment variables_  
-- docker-compose up -d  _# 啟動開發用資料庫_
+- docker compose config  _# check docker-compose.yml output with environment variables_  
+- docker compose up -d  _# 啟動開發用資料庫_
 
 #### 資料蒐集步驟
 * Main程式為"getData.py"
