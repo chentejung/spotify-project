@@ -45,11 +45,11 @@ def query_ablum(name):
 
 @app.route('/tracks/<string:artName>/<string:albName>')  # fisrt one is artist's name, second one is album name
 def trackinfoGen(artName, albName):
-        res = dataAnalysis.trackDataGen(artName, albName)
-        if res == 0:
-            return 'No track information yet!'
-        else:
-            return render_template('trackInfo1.html', albumName = res[0], albumID = res[1], table_data = res[2], colname = res[3], artName = res[4])
+    res = dataAnalysis.trackDataGen(artName, albName)
+    if res == 0:
+        return 'No track information yet!'
+    else:
+        return render_template('trackInfo1.html', albumName = res[0], albumID = res[1], table_data = res[2], colname = res[3], artName = res[4])
         
 
 @app.route("/tracks/detail/<string:albumID>")
