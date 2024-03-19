@@ -1,26 +1,69 @@
 from DB import Spotify
+import os
 import pandas as pd
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-from flask import Flask, render_template, redirect, request, url_for, jsonify, make_response
+from flask import Flask, render_template, redirect, request, url_for, session
+from authlib.integrations.flask_client import OAuth
+# from authlib.common.security import generate_token
 import dataAnalysis
 from genius1 import findLyrics
+
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY')
 
 
 @app.route("/", methods=['POST', 'GET'])
 def hello():
     text = "Hello, World! Searching for music?"
+    text2 = "Or login your Spotify discover some of your music taste🫶🏻"
     if request.method == 'POST':
-        srcItem = request.form['srcFilter']
-        return redirect(url_for('showStats', srcFilter=srcItem))
+        if 'srcFilter' in request.form:
+            srcItem = request.form['srcFilter']
+            return redirect(url_for('showStats', srcFilter=srcItem))
+        else:
+            session['client_id'] = request.form['clientId']
+            session['client_secret'] = request.form['clientSecret']
+            return redirect(url_for('spotifyOauth'))
     else:
-        return render_template('welcomepage.html', text=text)
+        return render_template('welcomepage.html', text=text, text2=text2)
 
 @app.route("/stats/<string:srcFilter>")
 def showStats(srcFilter):
     title, srcData, genreData = dataAnalysis.sortPopularity(srcFilter)
     return render_template('stats1.html', value1=title, value2=srcData, value3=genreData)
+
+@app.route("/login")
+def spotifyOauth():
+    global spotifyLogin
+    spotifyLogin = OAuth(app).register(
+    name='spotify',
+    client_id=session.get('client_id'),
+    client_secret=session.get('client_secret'),
+    access_token_url='https://accounts.spotify.com/api/token',
+    access_token_params=None,
+    authorize_url='https://accounts.spotify.com/authorize',
+    authorize_params=None,
+    client_kwargs={'scope': 'user-read-private user-read-email'},
+)
+
+    callback_uri = url_for('callback', _external=True)
+    return spotifyLogin.authorize_redirect(callback_uri)
+
+
+@app.route("/callback")
+def callback():
+    # retrieve access token back
+    tokenResp = spotifyLogin.authorize_access_token()
+    session['apiToken'] = tokenResp['access_token']
+    session['refreshToken'] = tokenResp['refresh_token']
+    return redirect(url_for('userInfo'))
+
+@app.route("/user")
+def userInfo():
+    # retrieve user info and show analysis
+    userInfo = dataAnalysis.userProfile(session.get('apiToken'))
+    return render_template('userProfile.html', userInfo=userInfo)
 
 
 @app.route("/artist/<string:name>")

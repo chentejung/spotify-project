@@ -109,7 +109,7 @@ def InfoFromSpotify(srcType, srcTab, newTabName):
 
     elif srcType == 'trackGen':
         if not pd.DataFrame(Spotify(newTabName).aggregate_number_search('href','count')).empty:
-            listPath = '/home/ellie/mineProject/spotify/files/source/rap/20240202/yetSearchTrackAlbumID.txt'
+            listPath = '/home/ellie/mineProject/spotify/files/source/rap/20240207/yetSearchTrackAlbumID-1.txt'
             with open(listPath, 'r') as f:
                 flatList = f.read().splitlines()#[8744:]
         else:

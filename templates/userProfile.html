@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- <script src="js/oauth2.js" type="module"></script> -->
+    <style type="text/css">
+        .back{
+            background-color:lightpink;
+        }
+        .flex{
+            font-size: 38px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin:15% auto;    
+        }
+        .flex2{
+            font-size: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin:15% auto;    
+        }
+    </style>
+</head>
+<body class="back">
+    <div id="main" data-id="{{ id }}"></div>
+    <h1>Display your Spotify profile data</h1>
+    <section id="profile">
+    <h2>Logged in as <span id="displayName">{{ userInfo.display_name }}</span></h2>
+    <span id="avatar"></span>
+    <ul>
+        <li>User ID: <span id="id">{{ userInfo.id }}</span></li>
+        <li>Email: <span id="email">{{ userInfo.email }}</span></li>
+        <li>Spotify URI: <a id="uri" href="#">{{ userInfo.uri }}</a></li>
+        <li>Link: <a id="url" href="#"></a>{{ userInfo.external_urls.spotify }}</li>
+        <li>Profile Image: <span id="imgUrl">{{ userInfo.images }}</span></li>
+    </ul>
+    </section>
+</body>
+</html>

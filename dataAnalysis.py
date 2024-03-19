@@ -183,7 +183,12 @@ def trackDataGen(artName, albName):
         return 0
     
 
-    
+def userProfile(accToken):
+    reqUrl = 'https://api.spotify.com/v1/me'
+    headers = {'Authorization': f"Bearer {accToken}"}
+    resp1 = backendFunc.requestUrl(reqUrl, headers, 'json')
+    return resp1
+
 
 if __name__ == '__main__':
     # sort = 'followers'
