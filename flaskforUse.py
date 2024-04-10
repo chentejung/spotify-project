@@ -65,6 +65,13 @@ def userInfo():
     userInfo = dataAnalysis.userProfile(session.get('apiToken'))
     return render_template('userProfile.html', userInfo=userInfo)
 
+@app.route("/logout")
+def logout():
+    # clear session
+    # session.pop('apiToken', None)
+    # session.pop('refreshToken', None)
+    session.clear()
+    return redirect(url_for('hello'))
 
 @app.route("/artist/<string:name>")
 def query_artist(name):
