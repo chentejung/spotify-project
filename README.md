@@ -83,7 +83,6 @@ if __name__ == '__main__':
 
 
 ## Website
-### Function Display
 
 1. Execute __flaskforUse.py__ to start the web
 ```
