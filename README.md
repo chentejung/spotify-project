@@ -79,7 +79,7 @@ if __name__ == '__main__':
     # InfoFromSpotify(infoType, sourceTab, newTabName)
 ```
 
-6. Follow same operation in __Step 5__ for retrieving __album information (part 3 uncomment)__ and __track information (part 4 uncomment)__
+6. Follow same operation in __Step 5__ for retrieving __album information (uncomment part 3)__ and __track information (uncomment part 4)__
 
 
 ## Website
