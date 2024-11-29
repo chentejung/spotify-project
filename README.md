@@ -20,7 +20,7 @@ DB_PORT = 27017
 DB_NAME = "Spotify"
 SPOTIFY_TOKEN_OWNER = ''
 ```
-#### Initialization environment
+#### Initialize environment
 ```
 $ pip install -r requirements.txt  
 $ docker compose config  # Check docker-compose.yml output with environment variables
