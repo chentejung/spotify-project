@@ -6,7 +6,7 @@
   * Follow the steps in the "Getting Started" guide to create an app and obtain the Client ID and Secret.
 
 ### Environment
-* Pyhon: 3.9
+* Python: 3.9
 * Docker: 1.24
 
 ##### .env sample
