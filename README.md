@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
 4. Execute getData.py and retrieve singers' Spotify ID
 ```
-python getData.py
+$ python getData.py
 ```
 
 5. Edit __getData.py__ and comment 1st part, uncomment 2nd part.  __Repeat "Step 4" to retrieve artist data from Spotify__
@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
 1. Execute __flaskforUse.py__ to start the web
 ```
-python flaskforUse.py
+$ python flaskforUse.py
 ```
 2. Access website on __http://[server IP]:5000__
 
