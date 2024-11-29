@@ -4,9 +4,12 @@
 * Create a Spotify app to obtain the Client ID and Secret
   * Go to https://developer.spotify.com/documentation/web-api and log in with your Spotify account.
   * Follow the steps in the "Getting Started" guide to create an app and obtain the Client ID and Secret.
-* Install Docker
 
-###### .env sample
+### Environment
+* Pyhon: 3.9
+* Docker: 1.24
+
+##### .env sample
 ```
 CLIENT_ID = ""
 CLIENT_SECRET = ""
@@ -54,7 +57,7 @@ if __name__ == '__main__':
 python getData.py
 ```
 
-5. Edit __getData.py__ and comment 1st part, uncomment 2nd part
+5. Edit __getData.py__ and comment 1st part, uncomment 2nd part.  __Repeat "Step 4" to retrieve artist data from Spotify__
 ```
 if __name__ == '__main__':
     # filePath = '/home/ellie/mineProject/spotify/files/source/20231206/missingArtist.txt'
@@ -75,3 +78,25 @@ if __name__ == '__main__':
     # newTabName = 'rapper_track_general_information'
     # InfoFromSpotify(infoType, sourceTab, newTabName)
 ```
+
+6. Follow same operation in __Step 5__ for retrieving __album information (part 3 uncomment)__ and __track information (part 4 uncomment)__
+
+
+## Website
+### Function Display
+
+1. Execute __flaskforUse.py__ to start the web
+```
+python flaskforUse.py
+```
+2. Access website on __http://[server IP]:5000__
+
+### At Front Page
+* Check singer popularity and followers data
+* Login Spotify account for personal information
+
+#### Search artist
+http://[server IP]:5000/__artist/[Singer's name]__  --->  Ex: http://127.0.0.1:5000/artist/Kendrick Lamar
+
+#### List albums of certain singer and check detailed track information
+http://[server IP]:5000/__album/[Singer's name]__   --->  Ex: http://127.0.0.1:5000/album/Kendrick Lamar
