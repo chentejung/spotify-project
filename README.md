@@ -1,13 +1,12 @@
 # Spotify-project
 
 ## Getting started
-### 前置作業
-* 建立Spotify app 後取得client ID 和Secret
-  * 至 https://developer.spotify.com/documentation/web-api ，登入自己的Spotify帳號
-  * 依照 **Getting Started** 步驟建立app，取得client ID 和Secret
-* 安裝Docker
+* Create a Spotify app to obtain the Client ID and Secret
+  * Go to https://developer.spotify.com/documentation/web-api and log in with your Spotify account.
+  * Follow the steps in the "Getting Started" guide to create an app and obtain the Client ID and Secret.
+* Install Docker
 
-###### 配置檔 .env
+###### .env sample
 ```
 CLIENT_ID = ""
 CLIENT_SECRET = ""
@@ -18,13 +17,61 @@ DB_PORT = 27017
 DB_NAME = "Spotify"
 SPOTIFY_TOKEN_OWNER = ''
 ```
-#### 啟動環境
-- pip install -r requirements.txt  
-- docker compose config  _# check docker-compose.yml output with environment variables_  
-- docker compose up -d  _# 啟動開發用資料庫_
+#### Initialization environment
+```
+$ pip install -r requirements.txt  
+$ docker compose config  # Check docker-compose.yml output with environment variables
+$ docker compose up -d  # Start MongoDB
+```
 
-#### 資料蒐集步驟
-* Main程式為"getData.py"
-1. 蒐集歌手名單 --->> 可參考**getArtist.py**
-2. 執行getData.py 裡的**def getArtistId** ，取得歌手的Spotify ID 並存入DB
-3. 執行getData.py 裡的**def InfoFromSpotify**，讀取 ID 進行 Spotify API 搜尋後將資訊存入DB
+#### Retrieve data steps
+1. Retrieve singer name list on your own or refer to __getArtist.py__
+2. Save data in __.txt__
+3. Edit __getData.py__ and uncomment 1st part, replace filePath with yours
+```
+if __name__ == '__main__':
+    filePath = '/home/ellie/mineProject/spotify/files/source/20231206/missingArtist.txt'
+    collName = getArtistId(filePath)
+
+    # infoType = 'artist'
+    # sourceTab = 'rap_ID'
+    # newTabName = 'rapper_information'
+    # InfoFromSpotify(infoType, sourceTab, newTabName)
+
+    # infoType = 'album'
+    # sourceTab = 'rapper_information'
+    # newTabName = 'rapper_album_information'
+    # InfoFromSpotify(infoType, sourceTab, newTabName)
+
+    # infoType = 'trackGen'
+    # sourceTab = 'rapper_album_information'
+    # newTabName = 'rapper_track_general_information'
+    # InfoFromSpotify(infoType, sourceTab, newTabName)
+```
+
+4. Execute getData.py and retrieve singers' Spotify ID
+```
+python getData.py
+```
+
+5. Edit __getData.py__ and comment 1st part, uncomment 2nd part
+```
+if __name__ == '__main__':
+    # filePath = '/home/ellie/mineProject/spotify/files/source/20231206/missingArtist.txt'
+    # collName = getArtistId(filePath)
+
+    infoType = 'artist'
+    sourceTab = 'rap_ID'
+    newTabName = 'rapper_information'
+    InfoFromSpotify(infoType, sourceTab, newTabName)
+
+    # infoType = 'album'
+    # sourceTab = 'rapper_information'
+    # newTabName = 'rapper_album_information'
+    # InfoFromSpotify(infoType, sourceTab, newTabName)
+
+    # infoType = 'trackGen'
+    # sourceTab = 'rapper_album_information'
+    # newTabName = 'rapper_track_general_information'
+    # InfoFromSpotify(infoType, sourceTab, newTabName)
+```
