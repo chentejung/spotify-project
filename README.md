@@ -27,7 +27,7 @@ $ docker compose config  # Check docker-compose.yml output with environment vari
 $ docker compose up -d  # Start MongoDB
 ```
 
-#### Retrieve data steps
+#### Retrieve data
 1. Retrieve singer name list on your own or refer to __getArtist.py__
 2. Save data in __.txt__
 3. Edit __getData.py__ and uncomment 1st part, replace filePath with yours
